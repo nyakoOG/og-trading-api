@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
+import os
 
 app = Flask(__name__)
 
@@ -50,8 +51,7 @@ def place_order():
     except BinanceAPIException as e:
         return jsonify({'error': str(e)}), 400
 
-import os
-
+# Esto es CLAVE para que Render detecte el puerto
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host="0.0.0.0", port=port)
