@@ -55,4 +55,17 @@ def place_order():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host="0.0.0.0", port=port)
+@app.route('/margin', methods=['POST'])
+def get_margin_account():
+    data = request.json
+    api_key = data.get('api_key')
+    api_secret = data.get('api_secret')
+
+    client = Client(api_key, api_secret)
+    try:
+        account_info = client.get_margin_account()
+        return jsonify(account_info)
+    except BinanceAPIException as e:
+        return jsonify({'error': str(e)}), 400
+
 
